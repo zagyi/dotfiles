@@ -1,0 +1,31 @@
+# While typically zsh recommends storing environment variables such as `PATH` in
+# `.zshenv`, in MacOS, `/etc/zprofile` calls the `path_helper` utility to set
+# the `PATH`. Hence, it is necessary to set `PATH` in a zsh configuration file
+# that is sourced after `/etc/zprofile`, often `.zshrc` (interactive) or
+# `.zprofile` (login).
+#
+# x-man-page://path_helper
+# https://github.com/apple-oss-distributions/shell_cmds/blob/main/path_helper/path_helper.8
+# https://zsh.sourceforge.io/Doc/Release/Files.html -- Startup/Shutdown Files
+
+OS="$(uname -s)"
+
+# Default Homebrew installation paths for macOS and Linux
+# https://docs.brew.sh/FAQ#why-should-i-install-homebrew-in-the-default-location
+if [[ "${OS}" == "Darwin" ]]; then
+  if [[ "${CPUTYPE}" == "arm64" ]]; then
+    HOMEBREW_PREFIX="/opt/homebrew"
+  elif [[ "${CPUTYPE}" == "x86_64" ]]; then
+    HOMEBREW_PREFIX="/usr/local"
+  fi
+elif [[ "${OS}" == "Linux" ]]; then
+  HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+fi
+
+source <("${HOMEBREW_PREFIX}/bin/brew" shellenv)
+
+# https://specifications.freedesktop.org/basedir-spec/latest/#variables
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"

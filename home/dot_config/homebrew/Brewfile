@@ -1,0 +1,8 @@
+brew "chezmoi"
+brew "git"
+brew "tree" # Display directories as trees (with optional color/HTML output)
+brew "zsh-completions" # Additional completion definitions for zsh
+
+brew "mas" if OS.mac? # Mac App Store command-line interface
+
+#brew "yq"

@@ -33,15 +33,40 @@ function install_xcode_clt() {
   fi
 }
 
+# Look up `brew` in standard locations and eval `brew shellenv`
+# in order to initialize PATH/FPATH/MANPATH in the current 
+# script's environment.
+function lookup_brew_and_add_to_path() {
+  log "Look up `brew` in standard locations"
+
+  if ! command -v brew >/dev/null 2>&1; then
+    for brew_prefix in \
+      "/opt/homebrew/bin" \
+      "/usr/local/bin" \
+      "/home/linuxbrew/.linuxbrew/bin"; do
+      
+      if [ -f "$brew_prefix/brew" ]; then
+        log "Found `brew` in ${brew_prefix}."
+        eval "$("$brew_prefix/brew" shellenv)"
+        break
+      fi
+    done
+
+    log "`brew` is not available."
+  fi
+}
+
 # Installs Homebrew package manager on macOS and Linux if it is not already
 # installed.
 function install_homebrew() {
   local HOMEBREW_PKG_PATH="/tmp/homebrew.pkg"
 
+  lookup_brew_and_add_to_path
+
   if command -v brew &> /dev/null; then
     log "Homebrew is already installed at $(where brew)."
   else
-    log "Installing Homebrew..."
+    log "Install Homebrew"
     local OS
     OS="$(uname -s)"
 
@@ -86,11 +111,11 @@ found at ${HOMEBREW_PKG_PATH}."
           return 1
         fi
 
-        log "Installing Homebrew..."
+        log "Install Homebrew."
         sudo installer -package "${HOMEBREW_PKG_PATH}" -target "/"
 
         if command pkgutil --pkg-info "sh.brew.homebrew" &> /dev/null; then
-          log "Homebrew installed successfully to $(builtin where brew)."
+          log "Homebrew installed successfully."
           rm -f "${HOMEBREW_PKG_PATH}"
         else
           error "Homebrew installation failed. Please confirm that the file at \
@@ -114,27 +139,13 @@ manually at https://github.com/homebrew/brew/releases/latest."
         return 1
         ;;
     esac
-  fi
-}
 
-# Ensure brew is available in the current script's environment
-function ensure_brew_in_path() {
-  if ! command -v brew >/dev/null 2>&1; then
-    for brew_prefix in \
-      "/opt/homebrew/bin" \
-      "/usr/local/bin" \
-      "/home/linuxbrew/.linuxbrew/bin"; do
-      
-      if [ -f "$brew_prefix/brew" ]; then
-        eval "$("$brew_prefix/brew" shellenv)"
-        break
-      fi
-    done
+    lookup_brew_and_add_to_path
+
   fi
 }
 
 install_xcode_clt
 install_homebrew
-ensure_brew_in_path
 NONINTERACTIVE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew install chezmoi
 chezmoi init zagyi --apply

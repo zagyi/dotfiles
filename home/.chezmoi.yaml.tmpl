@@ -1,0 +1,10 @@
+{{- $xdgConfig := env "XDG_CONFIG_HOME" | default (printf "%s/.config" .chezmoi.homeDir) -}}
+{{- $xdgCache  := env "XDG_CACHE_HOME"  | default (printf "%s/.cache" .chezmoi.homeDir) -}}
+{{- $xdgData   := env "XDG_DATA_HOME"   | default (printf "%s/.local/share" .chezmoi.homeDir) -}}
+{{- $xdgState   := env "XDG_STATE_HOME" | default (printf "%s/.local/state" .chezmoi.homeDir) -}}
+
+data:
+  xdgConfig: {{ $xdgConfig | quote }}
+  xdgCache: {{ $xdgCache | quote }}
+  xdgData: {{ $xdgData | quote }}
+  xdgState: {{ $xdgState | quote }}

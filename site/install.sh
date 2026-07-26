@@ -66,7 +66,7 @@ function install_homebrew() {
   if command -v brew &> /dev/null; then
     log "Homebrew is already installed at $(where brew)."
   else
-    log "Install Homebrew"
+    log "Install Homebrew."
     local OS
     OS="$(uname -s)"
 
@@ -76,7 +76,8 @@ function install_homebrew() {
         # Apple requires by default that all software installed via `installer`
         # is signed by a developer certificate issued by Apple, I consider this
         # method more secure than running the convenience script.
-        log "Detected macOS, installing Homebrew with homebrew.pkg from Homebrew/brew..."
+        log "Detected macOS."
+        #log "Detected macOS, install Homebrew with homebrew.pkg from Homebrew/brew..."
 
         release_json=$(
           curl \
@@ -91,7 +92,7 @@ function install_homebrew() {
         release_asset_json=$(jq '.assets[] | select(.name | endswith ("pkg"))' <<< $release_json)
         asset_name=$(jq '.name' --raw-output <<< $release_asset_json)
         asset_browser_download_url=$(jq '.browser_download_url' --raw-output <<< $release_asset_json)
-        log "Downloading ${asset_name}..."
+        log "Download ${asset_name} from GitHub releases."
         log "-> ${asset_browser_download_url}"
 
         curl --fail --location --show-error --silent --output "${HOMEBREW_PKG_PATH}" \
@@ -111,7 +112,7 @@ found at ${HOMEBREW_PKG_PATH}."
           return 1
         fi
 
-        log "Install Homebrew."
+        log "Install Homebrew with homebrew.pkg"
         sudo installer -package "${HOMEBREW_PKG_PATH}" -target "/"
 
         if command pkgutil --pkg-info "sh.brew.homebrew" &> /dev/null; then
@@ -127,7 +128,7 @@ manually at https://github.com/homebrew/brew/releases/latest."
 
       "Linux")
         # Install with Bash shell script (https://github.com/Homebrew/install)
-        log "Detected Linux, installing Homebrew with Bash shell script..."
+        log "Detected Linux, install Homebrew with Bash shell script..."
         NONINTERACTIVE=1 /bin/bash -c "$(
           curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
         )"

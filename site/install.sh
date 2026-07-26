@@ -18,11 +18,12 @@ function install_xcode_clt() {
     if xcode-select -p >/dev/null 2>&1; then
       log "Xcode Command Line Tools are already installed."
     else
-      log "Triggering Xcode Command Line Tools installation..."
+      log "Trigger Xcode Command Line Tools installation."
       
       xcode-select --install
 
-      log "Waiting for Xcode Command Line Tools installation to complete..."
+      log "[!] Please switch to the installer window and follow the prompts."
+      log "... waiting for completion ..."
       until xcode-select -p >/dev/null 2>&1; do
         sleep 2
       done
@@ -116,8 +117,24 @@ manually at https://github.com/homebrew/brew/releases/latest."
   fi
 }
 
+# Ensure brew is available in the current script's environment
+function ensure_brew_in_path() {
+  if ! command -v brew >/dev/null 2>&1; then
+    for brew_prefix in \
+      "/opt/homebrew/bin" \
+      "/usr/local/bin" \
+      "/home/linuxbrew/.linuxbrew/bin"; do
+      
+      if [ -f "$brew_prefix/brew" ]; then
+        eval "$("$brew_prefix/brew" shellenv)"
+        break
+      fi
+    done
+  fi
+}
+
 install_xcode_clt
 install_homebrew
-brew install chezmoi
-
+ensure_brew_in_path
+NONINTERACTIVE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew install chezmoi
 chezmoi init zagyi --apply

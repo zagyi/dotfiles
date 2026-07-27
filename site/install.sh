@@ -146,4 +146,9 @@ manually at https://github.com/homebrew/brew/releases/latest."
 install_xcode_clt
 install_homebrew
 NONINTERACTIVE=1 HOMEBREW_NO_AUTO_UPDATE=1 brew install chezmoi
-chezmoi init zagyi --apply
+
+if [ -d "$HOME/.local/share/chezmoi/.git" ]; then
+  chezmoi update --init
+else
+  chezmoi init zagyi --apply
+fi

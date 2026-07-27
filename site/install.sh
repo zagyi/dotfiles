@@ -63,9 +63,7 @@ function install_homebrew() {
 
   lookup_brew_and_add_to_path
 
-  if command -v brew &> /dev/null; then
-    log "Homebrew is already installed at $(where brew)."
-  else
+  if ! command -v brew &> /dev/null 2>&1; then
     log "Install Homebrew."
     local OS
     OS="$(uname -s)"
@@ -142,7 +140,6 @@ manually at https://github.com/homebrew/brew/releases/latest."
     esac
 
     lookup_brew_and_add_to_path
-
   fi
 }
 

@@ -5,7 +5,13 @@
 # variables are not yet available in chezmoi's execution environment. 
 export XDG_CONFIG_HOME="{{ .xdgConfig }}"
 
+echo -e '\n\n----------- brew config'
 brew config
+
+echo -e '\n\n----------- brew doctor'
+brew doctor
+
+echo '----------'
 
 # Brewfile hash: {{ include "./dot_config/homebrew/Brewfile" | sha256sum }}
 if command brew bundle check --global &> /dev/null; then

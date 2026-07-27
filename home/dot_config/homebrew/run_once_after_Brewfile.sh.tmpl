@@ -10,5 +10,5 @@ if command brew bundle check --global &> /dev/null; then
   echo "The Brewfile's dependencies are already satisfied."
 else
   echo "The Brewfile's dependencies are not satisfied. Run brew bundle install --global"
-  brew bundle install --global
+  brew bundle install --global --verbose
 fi

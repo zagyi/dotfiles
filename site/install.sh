@@ -37,7 +37,7 @@ function install_xcode_clt() {
 # in order to initialize PATH/FPATH/MANPATH in the current 
 # script's environment.
 function lookup_brew_and_add_to_path() {
-  log "Look up brew in standard locations"
+  log "Look up brew in standard locations."
 
   if ! command -v brew >/dev/null 2>&1; then
     for brew_prefix in \
@@ -48,7 +48,7 @@ function lookup_brew_and_add_to_path() {
       if [ -f "$brew_prefix/brew" ]; then
         log "Found brew in ${brew_prefix}."
         eval "$("$brew_prefix/brew" shellenv)"
-        break
+        return
       fi
     done
 

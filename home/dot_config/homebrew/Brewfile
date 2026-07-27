@@ -9,9 +9,24 @@ brew "mas" if OS.mac? # Mac App Store command-line interface
 #brew "yq"
 
 # Casks
-
+#
 # Since some casks (e.g. google-chrome) do not have a SHA-256 checksum because
 # their download URLs are not versioned, --require-sha is manually set here
 # instead of HOMEBREW_CASK_OPTS. See Homebrew/homebrew-cask#147305
 
+## Browsers
+# https://github.com/Homebrew/homebrew-cask/blob/main/Casks/g/google-chrome.rb#L3
+cask "google-chrome" # Web browser
+cask "firefox@developer-edition", args: { require_sha: true } # Web browser
+
+### IDEs
+cask "visual-studio-code", args: { require_sha: true } # Open-source code editor
+
+###
+cask "obsidian", args: { require_sha: true } # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "ghostty", args: { require_sha: true } # Terminal emulator that uses platform-native UI and GPU acceleration
+
+
+
+#cask "font-fira-code", args: { require_sha: true } # Free monospaced font with programming ligatures
+#cask "font-liberation", args: { require_sha: true } # The Liberation Fonts is font collection which aims to provide document layout compatibility

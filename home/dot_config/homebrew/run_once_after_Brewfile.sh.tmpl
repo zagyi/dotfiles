@@ -1,9 +1,14 @@
 #!/usr/bin/env zsh
 
+# This is required, so that `brew bundle install` can locate the Brewfile, 
+# when a clean system is first initialized. In that scenario XDG_ path 
+# variables are not yet available in chezmoi's execution environment. 
+export XDG_CONFIG_HOME="{{ .xdgConfig }}"
+
 # Brewfile hash: {{ include "./dot_config/homebrew/Brewfile" | sha256sum }}
-if ! command brew bundle check --global &> /dev/null; then
+if command brew bundle check --global &> /dev/null; then
+  echo "The Brewfile's dependencies are already satisfied."
+else
   echo "The Brewfile's dependencies are not satisfied. Run brew bundle install --global"
   brew bundle install --global
-else
-  echo "The Brewfile's dependencies are already satisfied."
 fi

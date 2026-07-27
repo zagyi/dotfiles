@@ -21,6 +21,7 @@ cask "firefox@developer-edition", args: { require_sha: true } # Web browser
 
 ### IDEs
 cask "visual-studio-code", args: { require_sha: true } # Open-source code editor
+cask "cursor" # Write, edit, and chat about your code with AI
 
 ###
 cask "obsidian", args: { require_sha: true } # Knowledge base that works on top of a local folder of plain text Markdown files

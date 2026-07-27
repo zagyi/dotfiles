@@ -1,8 +1,17 @@
-brew "chezmoi"
-brew "git"
+
+brew "chezmoi" # Manage your dotfiles across multiple diverse machines, securely
+brew "git" # Distributed revision control system
 brew "tree" # Display directories as trees (with optional color/HTML output)
 brew "zsh-completions" # Additional completion definitions for zsh
 
 brew "mas" if OS.mac? # Mac App Store command-line interface
 
 #brew "yq"
+
+# Casks
+
+# Since some casks (e.g. google-chrome) do not have a SHA-256 checksum because
+# their download URLs are not versioned, --require-sha is manually set here
+# instead of HOMEBREW_CASK_OPTS. See Homebrew/homebrew-cask#147305
+
+cask "ghostty", args: { require_sha: true } # Terminal emulator that uses platform-native UI and GPU acceleration
